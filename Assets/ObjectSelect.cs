@@ -37,14 +37,20 @@ public class ObjectSelect : MonoBehaviour {
 			//hitObject.transform.parent = null;
 		}
 
-		else if (thalmicMyo.pose == Thalmic.Myo.Pose.Rest || thalmicMyo.pose == Thalmic.Myo.Pose.Unknown || thalmicMyo.pose == Thalmic.Myo.Pose.FingersSpread) {
+		else if ((thalmicMyo.pose == Thalmic.Myo.Pose.Rest || thalmicMyo.pose == Thalmic.Myo.Pose.Unknown || thalmicMyo.pose == Thalmic.Myo.Pose.FingersSpread)
+		         && isObjectPicked) {
 			isObjectPicked = false;
 			hitObject.GetComponent<Rigidbody>().isKinematic = false;
+			hitObject.GetComponent<Rigidbody>().AddForce(MyoController.transform.forward * 10);
 			hitObject = null;
 		}
 		Debug.Log (thalmicMyo.pose.ToString());
 
+		if (thalmicMyo.pose == Thalmic.Myo.Pose.DoubleTap) {
+			MyoController.transform.rotation = PlayerController.transform.rotation;
+			GameObject.Find ("Hub - 1 Myo").transform.rotation = PlayerController.transform.rotation;
 
+		}
 		if (isObjectPicked && hitObject) {
 			//hitObject.transform.eulerAngles = MyoController.transform.eulerAngles;
 			float xDegreesDiff =  MyoController.transform.eulerAngles.x - lastRotation.x;
